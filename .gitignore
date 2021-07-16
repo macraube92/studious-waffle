@@ -1,8 +1,8 @@
 # python cached
-*.pyc
+**/*.pyc
 
 # compiled binary
-*/**/run
+**/run
 
 # execution logs
-*.log
+**/*.log
