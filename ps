@@ -20,7 +20,7 @@ if __name__ == "__main__":
     folder = os.path.join(path, tag, name)
     if os.path.exists(folder):
         execute_path = os.path.join(folder, "run")
-        source_path = os.path.join(folder, name)
+        source_path = os.path.join(folder, name+".c")
         p = subprocess.Popen(["gcc", "-o", execute_path, source_path])
         p.wait()
         if p.returncode == 0:
