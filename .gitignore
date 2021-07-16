@@ -2,7 +2,7 @@
 *.pyc
 
 # compiled binary
-*/run
+*/**/run
 
 # execution logs
 *.log
