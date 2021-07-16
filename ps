@@ -1,0 +1,28 @@
+#!/usr/bin/python3
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) < 1:
+        print("usages:")
+        print(" " + sys.argv[0] + " name")
+        exit(-1)
+
+    import os
+    import subprocess
+    path = os.path.abspath(".")
+    name = sys.argv[1]
+
+    folder = os.path.join(path, name)
+    if os.path.exists(folder):
+        execute_path = os.path.join(folder, "run")
+        source_path = os.path.join(folder, name)
+        p = subprocess.Popen(["gcc", "-o", execute_path, source_path])
+        p.wait()
+        if p.returncode == 0:
+            run = subprocess.Popen([execute_path])
+            run.wait()
+    else:
+        os.mkdir(folder)
+        os.chdir(folder)
+        with open(name+".c", "w"):
+            pass
