@@ -20,6 +20,7 @@ if __name__ == "__main__":
     folder = os.path.join(path, tag, name)
     if os.path.exists(folder):
         print("exists %s in %s" %(name, tag))
+        os.chdir(folder)
         subprocess.Popen(["code", name+".c"])
     else:
         os.mkdir(folder)
