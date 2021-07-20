@@ -3,10 +3,29 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
-			"label": "(C/C++ DEBUG) compile a source for problem solving",
+			"label": "(C/C++) compile this file with 'DEBUG'",
 			"command": "/usr/bin/gcc",
 			"args": [
 				"-g",
+				"${file}",
+				"-o",
+				"${fileDirname}/run",
+				"-DDEBUG"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "compiler: /usr/bin/gcc"
+		},
+		{
+			"type": "cppbuild",
+			"label": "(C/C++) compile this file",
+			"command": "/usr/bin/gcc",
+			"args": [
 				"${file}",
 				"-o",
 				"${fileDirname}/run"
