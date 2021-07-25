@@ -1,21 +1,5 @@
 #include <stdio.h>
 
-typedef struct {
-    int buf[100][2];
-    int top;
-} Stack;
-
-void init(Stack * stack) { stack->top = -1; }
-void push(Stack * stack, int l, int h) {
-    stack->buf[++stack->top][0] = l;
-    stack->buf[stack->top][1] = h;
-}
-void pop(Stack * stack, int *l, int *h) {
-    *l = stack->buf[stack->top][0];
-    *h = stack->buf[stack->top--][1];
-}
-int empty(const Stack * stack) { return stack->top < 0; }
-
 void swap(int **a, int **b) {
     int *temp;
     temp = *a;
@@ -23,33 +7,39 @@ void swap(int **a, int **b) {
     *b = temp;
 }
 
-void sort(int *arr[], int N) {
-    Stack stack;
-    int L, H, t, l, h;
-
-    if (N == 1) return;
-
-    init(&stack);
-    push(&stack, 0, N-1);
-    while (!empty(&stack)) {
-        pop(&stack, &L, &H);
-        t = L;
-        l = t + 1;
-        h = H;
-
-        while (l < h) {
-            if (*arr[l] < *arr[t] || *arr[h] >= *arr[t]) {
-                if (*arr[l] < *arr[t]) l++;
-                if (*arr[h] >= *arr[t]) h--;
-            } else if (*arr[l] > *arr[h]) swap(&arr[l], &arr[h]);
-        }
-
-        if (*arr[l] < *arr[t]) swap(&arr[l], &arr[t]);
-        else swap(&arr[--l], &arr[t]);
-
-        if (l-1 > L) push(&stack, L, l-1);
-        if (l+1 < H) push(&stack, l+1, H);
+int *temp[200000];
+void sort(int *arr[], int s, int e) {
+    int a, b, h, i;
+    if (e - s < 2) return;
+    else if (e - s == 2) {
+        if (*arr[s] > *arr[s+1]) swap(&arr[s], &arr[s+1]);
+        return;
     }
+
+    h = s + (e - s) / 2;
+    sort(arr, s, h);
+    sort(arr, h, e);
+
+    a = s;
+    b = h;
+    for (i=s; i<e; i++) {
+        if (a < h && b < e) {
+            if (*arr[a] < *arr[b]) {
+                temp[i] = arr[a];
+                a++;
+            } else {
+                temp[i] = arr[b];
+                b++;
+            }
+        } else if (a == h) {
+            temp[i] = arr[b];
+            b++;
+        } else {
+            temp[i] = arr[a];
+            a++;
+        }
+    }
+    for (i=s; i<e; i++) arr[i] = temp[i];
 }
 
 int main(void) {
@@ -70,8 +60,8 @@ int main(void) {
         arr2[idx] = &query[i];
     }
 
-    sort(arr1, N);
-    sort(arr2, M);
+    sort(arr1, 0, N);
+    sort(arr2, 0, M);
 
     j = 0;
     for (i=0; i<M; i++) {
